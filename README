@@ -1,0 +1,7 @@
+Proof of concept
+PHP 7.1
+MySQL 5.7
+N+1 Solution in Batches
+Class autoloader
+Custom Error and Exception Handlers
+Configuration in an INI file
