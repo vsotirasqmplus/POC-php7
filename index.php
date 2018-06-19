@@ -7,7 +7,11 @@
  * License GPL-v3
  */
 
-require "setup.php";
+require_once $_SERVER['DOCUMENT_ROOT'].
+    DIRECTORY_SEPARATOR.
+    ( (explode(DIRECTORY_SEPARATOR,$_SERVER['REQUEST_URI'])[1]) ?? '.').
+    DIRECTORY_SEPARATOR.'setup.php';
+
 echo <<<HEAD
 <!DOCTYPE html>
 <html>
@@ -17,8 +21,9 @@ echo <<<HEAD
     </head>
     <body>
 HEAD;
+# echo $_SERVER['DOCUMENT_ROOT'],'<BR/>';
 $query = 'select id,username, firstname, middlename,lastname 
-from mdl_user where lastname like "%demi%" order by username limit 0,18';
+from mdl_user where lastname like "%kala%" order by username limit 0,18';
 
 # all records in one request, direct query
 # $DB = new \Classes\Database();
@@ -29,7 +34,7 @@ from mdl_user where lastname like "%demi%" order by username limit 0,18';
 
 # all records in batches, Object Instance Usage
 $DB = new \Classes\Database();
-$DB->setBatchQuery($query,30);
+$DB->setBatchQuery($query);
 $next = true;
 while ($next) {
     $recordset = $DB->getBatchNextPage();
@@ -38,6 +43,7 @@ while ($next) {
             case 'mysqli_result':
                 if ($recordset->num_rows > 0) {
                     echo \Classes\Database::tableRecordSet($recordset);
+                    flush();
                 }
                 break;
         }
